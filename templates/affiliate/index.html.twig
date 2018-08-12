@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affiliate index{% endblock %}
+
+{% block body %}
+    <h1>Affiliate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Url</th>
+                <th>Email</th>
+                <th>Token</th>
+                <th>IsActive</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for affiliate in affiliates %}
+            <tr>
+                <td>{{ affiliate.id }}</td>
+                <td>{{ affiliate.url }}</td>
+                <td>{{ affiliate.email }}</td>
+                <td>{{ affiliate.token }}</td>
+                <td>{{ affiliate.isActive ? 'Yes' : 'No' }}</td>
+                <td>{{ affiliate.createdAt ? affiliate.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('affiliate_show', {'id': affiliate.id}) }}">show</a>
+                    <a href="{{ path('affiliate_edit', {'id': affiliate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('affiliate_new') }}">Create new</a>
+{% endblock %}

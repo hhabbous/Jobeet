@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Job{% endblock %}
+
+{% block body %}
+    <h1>Job</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ job.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ job.type }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ job.company }}</td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>{{ job.logo }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ job.url }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ job.position }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ job.location }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ job.description }}</td>
+            </tr>
+            <tr>
+                <th>HowToApply</th>
+                <td>{{ job.howToApply }}</td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <td>{{ job.token }}</td>
+            </tr>
+            <tr>
+                <th>IsPublic</th>
+                <td>{{ job.isPublic ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>IsActivated</th>
+                <td>{{ job.isActivated ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ job.email }}</td>
+            </tr>
+            <tr>
+                <th>ExpiresAt</th>
+                <td>{{ job.expiresAt ? job.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ job.createdAt ? job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ job.updatedAt ? job.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('job_index') }}">back to list</a>
+
+    <a href="{{ path('job_edit', {'id': job.id}) }}">edit</a>
+
+    {{ include('job/_delete_form.html.twig') }}
+{% endblock %}
