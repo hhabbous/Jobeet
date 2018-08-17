@@ -1,0 +1,51 @@
+version: "2"
+
+services:
+    db:
+        image: mariadb
+        container_name: "${PROJECT_NAME}_mariadb"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+#        volumes:
+#            - ./initdb:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+    php:
+        build: .docker/php7-fpm
+        container_name: "${PROJECT_NAME}_php"
+        volumes:
+            - ${PROJECT_APP_PATH}:/var/www/jobeet
+            - ./logs/jobeet:/var/www/jobeet/app/logs
+    nginx:
+        build: .docker/nginx
+        container_name: "${PROJECT_NAME}_nginx"
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
+        labels:
+            - 'traefik.backend=nginx'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
+    pma:
+        image: phpmyadmin/phpmyadmin
+        container_name: "${PROJECT_NAME}_pma"
+        labels:
+            - 'traefik.backend=pma'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:pma.${PROJECT_BASE_URL}'
+    mailhog:
+        image: mailhog/mailhog
+        container_name: "${PROJECT_NAME}_mailhog"
+        labels:
+            - 'traefik.backend=mailhog'
+            - 'traefik.port=8025'
+            - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+    traefik:
+        image: traefik
+        container_name: "${PROJECT_NAME}_traefik"
+        command: -c /dev/null --web --docker --logLevel=INFO
+        ports:
+            - 80:80
+#            - 8080:8080 # Dashboard
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
